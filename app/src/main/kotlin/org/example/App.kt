@@ -5,20 +5,53 @@ package org.example
 
 import de.vandermeer.asciitable.AsciiTable
 
-fun main() {
+fun imprimirHeader() {
+    println("Bienvenido a almacenes")
+    val asciiArt = """
+         ____ ___ __  __    _    _   _ 
+        / ___|_ _|  \/  |  / \  | \ | |
+        \___ \| || |\/| | / _ \ |  \| |
+         ___) | || |  | |/ ___ \| |\  |
+        |____/___|_|  |_/_/   \_\_| \_|
+    """.trimIndent()
+
+    println(asciiArt)
+
+    println()
+}
+
+fun imprimirInventario(inventario: List<ProductoInventario>) {
+    println("Presentamos nuestro catálogo de productos:")
+
+    println()
+
     val at = AsciiTable()
 
     // Añadir encabezados de columna
     at.addRule()
-    at.addRow("Nombre", "Edad", "Ciudad")
+    at.addRow("ID - Producto", "Precio", "Cantidad disponible")
     at.addRule()
 
     // Añadir filas
-    at.addRow("Juan", "30", "Madrid")
-    at.addRow("María", "25", "Barcelona")
-    at.addRow("Luis", "35", "Sevilla")
+    inventario.forEach { producto ->
+        at.addRow("${producto.producto.id} - ${producto.producto.nombre}", "$${producto.producto.precio}", "${producto.cantidadDisponible}")
+    }
+
     at.addRule()
 
     // Imprimir la tabla
     println(at.render())
+}
+
+fun main() {
+
+    // Creando inventario
+
+    val inventario = crearInventario()
+
+    imprimirHeader()
+
+    imprimirInventario(inventario)
+
+    println("Bienvenido a almacenes")
 }
