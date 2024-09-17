@@ -4,10 +4,12 @@
 package org.example
 
 import de.vandermeer.asciitable.AsciiTable
+import kotlin.text.toIntOrNull
 
 fun imprimirHeader() {
     println("Bienvenido a almacenes")
-    val asciiArt = """
+    val asciiArt =
+            """
          ____ ___ __  __    _    _   _ 
         / ___|_ _|  \/  |  / \  | \ | |
         \___ \| || |\/| | / _ \ |  \| |
@@ -34,7 +36,11 @@ fun imprimirInventario(inventario: List<ProductoInventario>) {
 
     // Añadir filas
     inventario.forEach { producto ->
-        at.addRow("${producto.producto.id} - ${producto.producto.nombre}", "$${producto.producto.precio}", "${producto.cantidadDisponible}")
+        at.addRow(
+                "${producto.producto.id} - ${producto.producto.nombre}",
+                "$${producto.producto.precio}",
+                "${producto.cantidadDisponible}"
+        )
     }
 
     at.addRule()
@@ -48,10 +54,43 @@ fun main() {
     // Creando inventario
 
     val inventario = crearInventario()
+    val carrito = Carrito()
 
     imprimirHeader()
 
     imprimirInventario(inventario)
 
-    println("Bienvenido a almacenes")
+    print("Escriba el id del producto que quiere añadir al carrito: ")
+
+    var input = readLine() // Leer el input del usuario como String
+
+    val idProducto = input?.toIntOrNull() // Convertir el input a Int de forma segura
+
+    if (idProducto != null) {
+        val productoSeleccionado = inventario.find { it.producto.id == idProducto }
+
+        println("")
+
+        if (productoSeleccionado != null) {
+            println("Producto seleccionado: ${productoSeleccionado.producto.nombre}")
+
+            print("Ingrese la cantidad: ")
+
+            input = readLine() // Leer el input del usuario como String
+
+            val cantidad = input?.toIntOrNull() // Convertir el input a Int de forma segura
+
+            if (cantidad != null) {
+                carrito.agregarProducto(productoSeleccionado.producto, cantidad)
+
+                println("")
+
+                carrito.mostrarCarrito()
+            } else {
+                println("El valor ingresado en cantidad no es un entero válido.")
+            }
+        }
+    } else {
+        println("El valor ingresado no es un número entero válido.")
+    }
 }
