@@ -5,12 +5,16 @@
  * For more details on building Java & JVM projects, please refer to https://docs.gradle.org/8.10.1/userguide/building_java_projects.html in the Gradle documentation.
  */
 
+ import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
+
 plugins {
     // Apply the org.jetbrains.kotlin.jvm Plugin to add support for Kotlin.
     alias(libs.plugins.kotlin.jvm)
 
     // Apply the application plugin to add support for building a CLI application in Java.
     application
+
+    id("com.github.johnrengelman.shadow") version "7.1.2"
 }
 
 repositories {
@@ -42,6 +46,22 @@ java {
 application {
     // Define the main class for the application.
     mainClass = "org.example.AppKt"
+}
+
+// Configurar la tarea shadowJar para empaquetar todas las dependencias
+tasks.withType<ShadowJar> {
+    manifest {
+        attributes(
+            "Main-Class" to "org.example.AppKt"  // Cambia esto a tu clase principal
+        )
+    }
+}
+
+// Asegurarte de que el JAR de sombra sea el artefacto predeterminado
+tasks {
+    build {
+        dependsOn(shadowJar)
+    }
 }
 
 tasks.named<Test>("test") {

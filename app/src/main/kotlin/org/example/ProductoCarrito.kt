@@ -1,5 +1,5 @@
 package org.example
 
-class ProductoCarrito(val producto: Producto, val cantidad: Int) {
+class ProductoCarrito(val producto: Producto, var cantidad: Int) {
     
 }

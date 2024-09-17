@@ -1,5 +1,5 @@
 package org.example
 
-class Producto(val nombre: String, val precio: Float) {
+class Producto(val id: Int, val nombre: String, val precio: Double) {
     
 }
