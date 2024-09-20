@@ -55,42 +55,35 @@ fun main() {
 
     val inventario = crearInventario()
     val carrito = Carrito()
+    var opt = 0
+    val menu = Menu()
 
-    imprimirHeader()
+    do {
+        menu.cleanScreen()
 
-    imprimirInventario(inventario)
+        imprimirHeader()
 
-    print("Escriba el id del producto que quiere añadir al carrito: ")
-
-    var input = readLine() // Leer el input del usuario como String
-
-    val idProducto = input?.toIntOrNull() // Convertir el input a Int de forma segura
-
-    if (idProducto != null) {
-        val productoSeleccionado = inventario.find { it.producto.id == idProducto }
+        imprimirInventario(inventario)
 
         println("")
 
-        if (productoSeleccionado != null) {
-            println("Producto seleccionado: ${productoSeleccionado.producto.nombre}")
-
-            print("Ingrese la cantidad: ")
-
-            input = readLine() // Leer el input del usuario como String
-
-            val cantidad = input?.toIntOrNull() // Convertir el input a Int de forma segura
-
-            if (cantidad != null) {
-                carrito.agregarProducto(productoSeleccionado.producto, cantidad)
-
-                println("")
-
-                carrito.mostrarCarrito()
-            } else {
-                println("El valor ingresado en cantidad no es un entero válido.")
-            }
+        for (option in menu.menuList) {
+            println(option)
         }
-    } else {
-        println("El valor ingresado no es un número entero válido.")
-    }
+
+        println("")
+        print("Ingrese la opción que desea realizar: ")
+
+        opt = readLine()?.toIntOrNull() ?: continue
+
+        if(!menu.menuOpt.containsKey(opt)) {
+            menu.cleanScreen()
+            continue
+        }
+
+        menu.menuOpt[opt]?.let { it(inventario, carrito) };
+        menu.cleanScreen()
+    } while(opt != 5)
+    print("Gracias por usar nuestro programa! 😁")
+
 }

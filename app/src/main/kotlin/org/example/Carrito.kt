@@ -5,6 +5,10 @@ import de.vandermeer.asciitable.AsciiTable
 class Carrito {
     private val productosEnCarrito = mutableListOf<ProductoCarrito>()
 
+    fun getProductoEnCarrito(id: Int): ProductoCarrito? {
+        return productosEnCarrito.find { it.producto.id == id }
+    }
+
     // Añadir un producto al carrito
     fun agregarProducto(producto: Producto, cantidad: Int = 1) {
         val productoEnCarrito = productosEnCarrito.find { it.producto.id == producto.id }
