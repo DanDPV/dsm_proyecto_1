@@ -76,6 +76,9 @@ class Carrito {
         }
     }
 
+    fun clear(){
+        productosEnCarrito.clear()
+    }
     // Obtener el total del carrito
     fun obtenerTotal(): Double {
         return productosEnCarrito.sumOf { it.producto.precio * it.cantidad }
