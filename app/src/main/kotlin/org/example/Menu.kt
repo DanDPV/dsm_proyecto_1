@@ -4,7 +4,7 @@ import de.vandermeer.asciitable.AsciiTable
 import kotlin.text.toIntOrNull
 
 class Menu {
-    val menuOpt = mutableMapOf<Int, (List<ProductoInventario>, Carrito) -> Unit>()
+    val menuOpt = mutableMapOf<Int, (MutableList<ProductoInventario>, Carrito) -> Unit>()
     val menuList = listOf(
         "1. Agregar producto al carrito",
         "2. Eliminar producto del carrito",
@@ -98,7 +98,7 @@ class Menu {
         }
     }
 
-    fun printFactura(inventario: List<ProductoInventario>, carrito: Carrito) {
+    fun printFactura(inventario: MutableList<ProductoInventario>, carrito: Carrito) {
         cleanScreen()
 
         if (carrito.obtenerTotal() == 0.0) {
@@ -127,6 +127,12 @@ class Menu {
                 "${producto.cantidad}",
                 "$${subtotal}"
             )
+
+            val pos = inventario.indexOfFirst { it.producto.id == producto.producto.id }
+            val obj = inventario[pos]
+            val temp = ProductoInventario(producto.producto, obj.cantidadDisponible - producto.cantidad)
+            inventario[pos] = temp;
+
         }
 
         asciiTable.addRule()
