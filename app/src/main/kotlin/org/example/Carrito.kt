@@ -9,6 +9,10 @@ class Carrito {
         return productosEnCarrito.find { it.producto.id == id }
     }
 
+    fun getProductosEnCarrito(): List<ProductoCarrito> {
+        return productosEnCarrito
+    }
+
     // Añadir un producto al carrito
     fun agregarProducto(producto: Producto, cantidad: Int = 1) {
         val productoEnCarrito = productosEnCarrito.find { it.producto.id == producto.id }
