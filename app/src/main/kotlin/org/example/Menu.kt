@@ -1,5 +1,6 @@
 package  org.example
 
+import de.vandermeer.asciitable.AsciiTable
 import kotlin.text.toIntOrNull
 
 class Menu {
@@ -68,7 +69,7 @@ class Menu {
 
         if (idProducto != null) {
             val productoSeleccionado = carrito.getProductoEnCarrito(idProducto)
-            if(productoSeleccionado == null) {
+            if (productoSeleccionado == null) {
                 println("Producto no existente en el carrito")
                 readlnOrNull()
                 return
@@ -78,7 +79,7 @@ class Menu {
             print("Ingrese la cantidad a elimiar (max: ${productoSeleccionado.cantidad}): ")
             input = readLine()
             val cantidad = input?.toIntOrNull()
-            if(cantidad == null || cantidad > productoSeleccionado.cantidad) {
+            if (cantidad == null || cantidad > productoSeleccionado.cantidad) {
                 print("Cantidad erronea")
                 readlnOrNull()
                 return
@@ -98,7 +99,58 @@ class Menu {
     }
 
     fun printFactura(inventario: List<ProductoInventario>, carrito: Carrito) {
-        //todo
+        cleanScreen()
+
+        if (carrito.obtenerTotal() == 0.0) {
+            println("No hay productos en el carrito para generar una factura.")
+            readlnOrNull()
+            return
+        }
+
+        println("Generando factura...")
+
+        println("")
+
+        val asciiTable = AsciiTable()
+
+        // Añadir encabezados de columna
+        asciiTable.addRule()
+        asciiTable.addRow("ID - Producto", "Precio unitario", "Cantidad", "Subtotal")
+        asciiTable.addRule()
+
+        // Añadir filas para cada producto del carrito
+        carrito.getProductosEnCarrito().forEach { producto ->
+            val subtotal = producto.producto.precio * producto.cantidad
+            asciiTable.addRow(
+                "${producto.producto.id} - ${producto.producto.nombre}",
+                "$${producto.producto.precio}",
+                "${producto.cantidad}",
+                "$${subtotal}"
+            )
+        }
+
+        asciiTable.addRule()
+
+        // Calcular total e impuestos
+        val total = carrito.obtenerTotal()
+        val ivaAmount = total * 0.13
+        val totalWithIVA = total + ivaAmount
+
+        // Imprimir la tabla de la factura
+        println(asciiTable.render())
+
+        println("")
+
+        // Mostrar detalles del total, impuestos y total final
+        println("Subtotal: $${String.format("%.2f", total)}")
+        println("IVA (13%): $${String.format("%.2f", ivaAmount)}")
+        println("Total + IVA: $${String.format("%.2f", totalWithIVA)}")
+
+        println("")
+
+        // Confirmar la compra
+        println("Gracias por su compra! 😁")
+        readlnOrNull()
     }
 
     fun showCarrito(inventario: List<ProductoInventario>, carrito: Carrito) {
