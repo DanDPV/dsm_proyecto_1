@@ -11,10 +11,13 @@ fun crearProductos(): List<Producto> {
     )
 }
 
-fun crearInventario(): List<ProductoInventario> {
+fun crearInventario(): MutableList<ProductoInventario> {
     val productos = crearProductos()
+    val inventario = mutableListOf<ProductoInventario>()
 
-    return productos.map {
-        ProductoInventario(it, Random.nextInt(0, 11))
+    productos.forEach {
+        inventario.add(ProductoInventario(it, Random.nextInt(0, 11)))
     }
+
+    return inventario
 }
