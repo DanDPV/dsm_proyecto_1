@@ -40,7 +40,7 @@ class Menu {
 
                 val cantidad = input?.toIntOrNull() // Convertir el input a Int de forma segura
 
-                if (cantidad != null) {
+                if (cantidad != null && cantidad <= productoSeleccionado.cantidadDisponible) {
                     carrito.agregarProducto(productoSeleccionado.producto, cantidad)
 
                     println("")
@@ -49,6 +49,7 @@ class Menu {
                     readlnOrNull()
                 } else {
                     println("El valor ingresado en cantidad no es un entero válido.")
+                    readlnOrNull()
                 }
             }
         } else {
