@@ -150,6 +150,7 @@ class Menu {
 
         // Confirmar la compra
         println("Gracias por su compra! 😁")
+        carrito.clear()
         readlnOrNull()
     }
 
